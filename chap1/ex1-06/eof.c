@@ -10,6 +10,6 @@
 
 int main()
 {
-    int c;
-    printf("%d\n", getchar() != EOF);
+        int c;
+        printf("%d\n", getchar() != EOF);
 }

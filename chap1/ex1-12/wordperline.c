@@ -11,19 +11,23 @@
 /* count lines, words, and characters in input */
 int main()
 {
-    int c;
+        int c;
 
-    while ((c = getchar()) != EOF) {
-        if (c == ' ' || c == '\n' || c == '\t') {
-            putchar('\n');
-            c = getchar();
-            while (c == ' ' || c == '\n' || c == '\t') {
-                c = getchar();
-            }
+        while ((c = getchar()) != EOF)
+        {
+                if (c == ' ' || c == '\n' || c == '\t')
+                {
+                        putchar('\n');
+                        c = getchar();
+                        while (c == ' ' || c == '\n' || c == '\t')
+                        {
+                                c = getchar();
+                        }
+                }
+                if (c != EOF)
+                {
+                        putchar(c);
+                }
         }
-        if (c != EOF) {
-            putchar(c);
-        }
-    }
-    putchar('\n');
+        putchar('\n');
 }

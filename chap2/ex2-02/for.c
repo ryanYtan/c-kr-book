@@ -1,3 +1,16 @@
+/**
+ * Exercise 2-2
+ *
+ * Write a loop equivalent to the for loop above without using
+ * && or ||.
+ */
+
+
+/*
+for (i = 0; i < lim - 1 && (char = getchar()) != '\n' && c != EOF; ++i)
+        s[i] = c;
+*/
+
 #include <stdio.h>
 
 int getline_k(char[], int);
@@ -12,14 +25,9 @@ int main()
 int getline_k(char s[], int lim)
 {
         int c, i;
-
-        /*
-        for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
-            s[i] = c;
-        */
-
         i = 0;
-        while (i < lim - 1) {
+        while (i < lim - 1)
+        {
                 if ((c = getchar()) == EOF)
                         goto destroyed;
                 if (c == '\n')
@@ -28,10 +36,11 @@ int getline_k(char s[], int lim)
         }
 
 destroyed:
-        if (c == '\n') {
-            s[i] = c;
-            ++i;
+        if (c == '\n')
+        {
+                s[i] = c;
+                ++i;
         }
         s[i] = '\0';
         return i;
-    }
+}

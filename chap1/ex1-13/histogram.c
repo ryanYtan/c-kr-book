@@ -27,23 +27,29 @@ int main()
                 hist[i] = 0;
 
         word_len = 0;
-        while ((c = getchar()) != EOF) {
-                if (!is_a_letter(c)) {
+        while ((c = getchar()) != EOF)
+        {
+                if (!is_a_letter(c))
+                {
                         ++hist[word_len];
                         word_len = 0;
                 }
-                else if (is_a_separator(c)) {
+                else if (is_a_separator(c))
+                {
                         ++hist[word_len];
                         word_len = 0;
                 }
-                else {
+                else
+                {
                         ++word_len;
                 }
         }
 
-        for (i = 1; i < UPPER; ++i) {
+        for (i = 1; i < UPPER; ++i)
+        {
                 printf("%d:\t", i);
-                for (j = 0; j < hist[i]; ++j) {
+                for (j = 0; j < hist[i]; ++j)
+                {
                         putchar(BLOCK);
                 }
                 putchar('\n');
