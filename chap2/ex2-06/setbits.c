@@ -6,62 +6,53 @@
  * bits unchanged
  */
 #include "../../utility.h"
+#include <limits.h>
 #include <assert.h>
 
-/*
-0 & 1-> 0
-1 & 1-> 1
-*/
-
-//sets the i-th (zero-indexed, from the right) bit of x to v (1, 0)
+//sets the i-th (zero-indexed, from the right) bit of x to v (either {1, 0})
 unsigned int set_nth(unsigned int x, int i, _Bool v)
 {
-        return v == 1
-                ? x | (v << i)
-                : x & ~(v << i);
+        return v
+                ? x | (1u << i)
+                : x & ~(1u << i);
 }
 
 //gets the i-th (zero-indexed, from the right) bit of x
 _Bool get_nth(unsigned int x, int i)
 {
-        return 0x1 & (x >> i);
+        return (x & (1u << i)) > 0;
+        //return 1u & (x >> i);
 }
 
 unsigned int setbits(unsigned int x, int p, int n, unsigned int y)
 {
+        //p=7, n=4
         for (int i = 0; i < n; i++)
         {
-                int xpos = p - i;
-                int ypos = n - i - 1;
-                _Bool v = get_nth(y, ypos);
-                x = set_nth(x, xpos, v);
+                _Bool v = get_nth(y, (n - 1) - i);
+                x = set_nth(x, p - i, v);
         }
         return x;
 }
 
 unsigned int setbits2(unsigned int x, int p, int n, unsigned int y)
 {
-
-        0b0000111100001010; //original
-        0b1010000000000000; //left shift by WIDTH - n
-        0b0000000000001010; //right shift by WIDTH - n
-        0b0000000010100000; //left shift by n
-
-        0b0011001100110011; //x
-        0b1111111110101111; //
-
-        int shift_amt = n - 1;
+        unsigned int mask = (1u << n) - 1; //mask with rightmost n bits set
+        unsigned int y1 = mask & y; //y with only rightmost n bits, rest zero
+        unsigned int y2 = y1 << (p - n + 1); //set y1 in position to overwrite x
+        unsigned int x1 = x & ~(mask << (p - n + 1)); //"poke a hole" in x
+        unsigned int ret = x1 | y2;
+        return ret;
 }
 
 int main()
 {
         //                 15     8       0
         unsigned int x = 0b0011001100110011;
-        unsigned int y = 0b0000111100001111;
+        unsigned int y = 0b0111111100001010;
 
-        printf("x=%u\n", x);
-        printf("r=%u\n", setbits(x, 7, 4, y));
-
-        assert(setbits(x, 7, 4, y) == 0b0011001111110011);
+        assert(setbits2(x, 7, 4, y) == 0b0011001110100011);
+        assert(setbits2(x, 14, 5, y) == 0b0010101100110011);
+        assert(setbits2(x, 9, 8, y) == 0b0011000000101011);
         print_tc_success();
 }
