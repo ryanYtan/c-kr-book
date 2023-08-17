@@ -1,5 +1,4 @@
 /**
-/**
  * Exercise 3-03
  *
  * Write a function expand(s1,s2) that expands shorthand notations like a-z
