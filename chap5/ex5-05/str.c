@@ -139,4 +139,5 @@ int main(void)
                 pstrncpy(s + 5, t, 3);
                 assert(strcmp(s, "AAAAAabc") == 0);
         }
+        print_tc_success();
 }

@@ -67,4 +67,5 @@ int main()
                 char t[] = "0123";
                 assert(!strend(s, t));
         }
+        print_tc_success();
 }

@@ -51,4 +51,5 @@ int main()
                 assert(s[0] == '\0');
                 assert(strlen(s) == 0);
         }
+        print_tc_success();
 }
