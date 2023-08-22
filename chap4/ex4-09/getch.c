@@ -59,4 +59,5 @@ int main()
                 assert(getch() == EOF);
                 assert(getch() == EOF);
         }
+        print_tc_success();
 }

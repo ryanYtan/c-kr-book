@@ -68,4 +68,6 @@ int main()
                 *t2++ = c;
         }
         assert(strcmp(t, "1234567\n") == 0);
+
+        print_tc_success();
 }
