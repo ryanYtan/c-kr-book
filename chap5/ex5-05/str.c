@@ -14,8 +14,11 @@
 char *pstrncpy(char *s, const char *t, size_t n)
 {
         size_t i = 0;
-        while (i++ < n && *t)
+        while (i < n && *t)
+        {
                 *s++ = *t++;
+                i++;
+        }
         while (i++ < n)
                 *s = '\0';
         return s;
