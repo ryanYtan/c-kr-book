@@ -11,74 +11,104 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <math.h>
 #include "../../utility.h"
 #define MAX_NARGS 50
+#define MAX_SLEN 256
 
-static char *stack[MAX_NARGS] = { 0 };
+static char stack[MAX_NARGS][MAX_SLEN] = {{ 0 }};
 static int sp = 0;
-static char *allowed_ops[] = { "+", "-", "*", "/", "%" };
-static int allowed_ops_len = sizeof(allowed_ops) / sizeof(allowed_ops[0]);
 
-void push(char *s)
+static char *binops[] = {  "+", "-", "*", "/", "%", };
+static char *unops[] = { "sin", "sqrt", };
+
+void stack_push(char *s)
 {
-        stack[sp++] = s;
+        strcpy(stack[sp++], s);
 }
 
-char *pop()
+void stack_pop(char *s)
 {
         if (sp <= 0)
-                return NULL;
-        return stack[--sp];
+                s = NULL;
+        strcpy(s, stack[--sp]);
 }
 
-int size()
+int stack_size()
 {
         return sp;
 }
 
-bool is_op(char *s)
+bool is_in(char *s, char *a[], int alen)
 {
-        for (int i = 0; i < allowed_ops_len; i++)
-                if (strcmp(s, allowed_ops[i]) == 0)
+        for (int i = 0; i < alen; i++)
+                if (strcmp(s, a[i]) == 0)
                         return true;
         return false;
 }
 
 int main(int argc, char *argv[])
 {
-        if (argc < 2)
-        {
-                fprintf(stderr, "No arguments given\n");
-                return 1;
-        }
+        char op1[256];
+        char op2[256];
 
         for (int i = 0; i < argc; i++)
         {
-                char *op = argv[i];
-                if (is_op(op))
+                char *arg = argv[i];
+                if (is_in(arg, unops, sizeof(unops) / sizeof(unops[0])))
                 {
-                        char *op2 = pop();
-                        char *op1 = pop();
-                        if (op1 == NULL || op2 == NULL)
+                        stack_pop(op1);
+                        double n = atof(op1);
+                        if (strcmp(arg, "sin"))
                         {
-                                fprintf(stderr, "Invalid expression\n");
-                                return 1;
+                                n = sin(n);
                         }
-                        char *op2_endptr;
-                        char *op1_endptr;
-                        int op2_i = strtol(op2, &op2_endptr, 10);
-                        int op1_i = strtol(op1, &op1_endptr, 10);
-                        if (*op1_endptr != '\0' || *op2_endptr != '\0')
+                        else
                         {
-                                fprintf(stderr, "Invalid expression\n");
-                                return 1;
+                                //sqrt
+                                n = sqrt(n);
                         }
+                        char buf[1024] = { 0 };
+                        sprintf(buf, "%lf", n);
+                        stack_push(buf);
+                }
+                else if (is_in(arg, binops, sizeof(binops) / sizeof(binops[0])))
+                {
+                        stack_pop(op2);
+                        stack_pop(op1);
+                        double n2 = atof(op2);
+                        double n1 = atof(op1);
+                        if (strcmp(arg, "+") == 0)
+                        {
+                                n1 = n1 + n2;
+                        }
+                        else if (strcmp(arg, "-") == 0)
+                        {
+                                n1 = n1 - n2;
+                        }
+                        else if (strcmp(arg, "*") == 0)
+                        {
+                                n1 = n1 * n2;
+                        }
+                        else if (strcmp(arg, "/") == 0)
+                        {
+                                n1 = n1 / n2;
+                        }
+                        else
+                        {
+                                n1 = (int)n1 % (int)n2;
+                        }
+                        char buf[1024] = {0};
+                        sprintf(buf, "%lf", n1);
+                        stack_push(buf);
+                }
+                else
+                {
+                        stack_push(arg);
                 }
         }
 
-        if (size() != 1)
-        {
-                fprintf(stderr, "Invalid expression\n");
-                return 1;
-        }
+        char buf[1024] = {0};
+        stack_pop(buf);
+        printf("%s\n", buf);
 }
