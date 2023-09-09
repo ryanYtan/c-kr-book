@@ -1,33 +1,25 @@
 /**
  * Exercise 1-12
  *
- * Write a program that prints its input one world per line
+ * Write a program that prints its input one word per line
  */
 
 #include <stdio.h>
-#define IN 1  /* inside a word */
-#define OUT 0 /* outside a word */
+#include <stdbool.h>
+#include <ctype.h>
 
-/* count lines, words, and characters in input */
-int main()
-{
+int main() {
         int c;
-
-        while ((c = getchar()) != EOF)
-        {
-                if (c == ' ' || c == '\n' || c == '\t')
-                {
-                        putchar('\n');
-                        c = getchar();
-                        while (c == ' ' || c == '\n' || c == '\t')
-                        {
-                                c = getchar();
+        bool line_has_chars = false;
+        while ((c = getchar()) != EOF) {
+                if (isspace(c)) {
+                        if (line_has_chars) {
+                                putchar('\n');
+                                line_has_chars = false;
                         }
-                }
-                if (c != EOF)
-                {
+                } else {
                         putchar(c);
+                        line_has_chars = true;
                 }
         }
-        putchar('\n');
 }

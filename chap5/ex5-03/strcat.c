@@ -11,10 +11,8 @@
 //named pstrcat to not conflict with existing string.h functions
 void strend(char s[], char t[])
 {
-        while (*s)
-                s++;
-        while ((*s++ = *t++))
-                ;
+        while (*s && s++);
+        while ((*s++ = *t++));
 }
 
 int main()

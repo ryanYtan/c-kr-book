@@ -1,5 +1,5 @@
 /**
- * Exercise 1-7
+ * Exercise 1-07
  *
  * Write a program to print the value of EOF.
  */

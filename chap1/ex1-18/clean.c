@@ -2,32 +2,63 @@
  * Exercise 1-18
  *
  * Write a program to remove trailing blanks and tabs from each
- * line of input, and to delete entirely blank lines.
+ * line of input, and to delete entire blank lines.
  */
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 #include "../../utility.h"
-#define BUFSIZ 1024
-#define THRESHOLD 10
+
+int skip()
+{
+        int c, count = 0;
+        while ((c = getchar()) != EOF && c == ' ')
+                count++;
+        ungetc(c, stdin);
+        return count;
+}
 
 int main()
 {
-        char buf[BUFSIZ] = { 0 };
-
-        int c, i = 0;
-        while ((c = fgetc(stdin)) != EOF)
+        int c;
+        int nchars_for_line = 0;
+        while (1)
         {
-                if (c == '\n')
+                int nspaces = skip();
+                c = getchar();
+
+                if (c == EOF)
                 {
-                        if (strlen(buf) > THRESHOLD)
-                                printf("%s\n", buf);
-                        memset(buf, 0, BUFSIZ);
-                        i = 0;
+                        break;
+                }
+                else if (c == '\n')
+                {
+                        if (nchars_for_line > 0)
+                                putchar('\n');
                 }
                 else
                 {
-                        buf[i++] = c;
+                        for (int i = 0; i < nspaces; i++)
+                                putchar(' ');
+
+                        putchar(c);
+                        nchars_for_line++;
+                        while ((c = getchar()) != EOF && c != '\n' && c != ' ')
+                        {
+                                putchar(c);
+                                nchars_for_line++;
+                        }
+
+                        if (c == ' ')
+                        {
+                                ungetc(c, stdin);
+                        }
+                        if (c == '\n')
+                        {
+                                putchar(c);
+                        }
                 }
         }
 }

@@ -1,5 +1,5 @@
 /**
- * Exercise 1-8
+ * Exercise 1-08
  *
  * Write a program to count blanks, tabs and newlines
  */
@@ -8,17 +8,15 @@
 
 int main()
 {
-        int c;
-        int n;
-        n = 0;
+        int c, n = 0;
         while ((c = getchar()) != EOF)
         {
                 if (c == ' ')
-                        ++n;
+                        n++;
                 if (c == '\n')
-                        ++n;
+                        n++;
                 if (c == '\t')
-                        ++n;
+                        n++;
         }
         printf("%d\n", n);
 }

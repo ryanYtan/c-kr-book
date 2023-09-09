@@ -1,3 +1,9 @@
+/**
+ * Exercise 1-15
+ *
+ * Rewrite the temperature conversion program of Section 1.2 to use a
+ * function for conversion.
+ */
 #include <stdio.h>
 
 float fahr_to_celsius(float temp_in_fahr)
@@ -9,17 +15,13 @@ float fahr_to_celsius(float temp_in_fahr)
  * for fahr = 0, 20, ..., 300; floating-point version */
 int main()
 {
-        float fahr, celsius;
-        int lower, upper, step;
-        lower = 0;
-        upper = 300;
-        step = 20;
+        int lower = 0;
+        int upper = 300;
+        int step = 20;
 
-        fahr = lower;
-        while (fahr <= upper)
-        {
+        float fahr = lower;
+        while (fahr <= upper) {
                 printf("%3.0f %6.1f\n", fahr, fahr_to_celsius(fahr));
                 fahr = fahr + step;
         }
-        return 0;
 }
