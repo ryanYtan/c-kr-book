@@ -19,9 +19,7 @@ int read_into(char buf[], int limit)
 {
         int c, i = 0;
         while (i < limit && (c = getchar()) != EOF && c != '\n')
-        {
                 buf[i++] = c;
-        }
         if (c == EOF)
                 return -1;
         return i;
@@ -35,8 +33,7 @@ int main()
                 int len = read_into(buf, THRESHOLD + 1);
                 if (len == -1)
                         break;
-                if (len >= THRESHOLD + 1)
-                {
+                if (len >= THRESHOLD + 1) {
                         for (int j = 0; j < THRESHOLD + 1; j++)
                                 putchar(buf[j]);
                         int c;

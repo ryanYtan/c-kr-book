@@ -29,36 +29,27 @@ int main()
                 int nspaces = skip();
                 c = getchar();
 
-                if (c == EOF)
-                {
+                if (c == EOF) {
                         break;
-                }
-                else if (c == '\n')
-                {
+                } else if (c == '\n') {
                         if (nchars_for_line > 0)
                                 putchar('\n');
-                }
-                else
-                {
+                } else {
                         for (int i = 0; i < nspaces; i++)
                                 putchar(' ');
 
                         putchar(c);
                         nchars_for_line++;
-                        while ((c = getchar()) != EOF && c != '\n' && c != ' ')
-                        {
+                        while ((c = getchar()) != EOF && c != '\n' && c != ' ') {
                                 putchar(c);
                                 nchars_for_line++;
                         }
 
                         if (c == ' ')
-                        {
                                 ungetc(c, stdin);
-                        }
+
                         if (c == '\n')
-                        {
                                 putchar(c);
-                        }
                 }
         }
 }
