@@ -3,6 +3,13 @@
  *
  * Write a program to remove trailing blanks and tabs from each
  * line of input, and to delete entire blank lines.
+ *
+ * In this program, I have printed spaces as plus signs ('+') to check
+ * in the printed output whether spaces have been printed out.
+ *
+ * Unfortunately, this program is not compatible with tabs, only spaces. This
+ * is due to the method used to count the number of spaces to not depend on
+ * memory/arrays.
  */
 #include <ctype.h>
 #include <stdio.h>
@@ -23,33 +30,35 @@ int skip()
 int main()
 {
         int c;
-        int nchars_for_line = 0;
-        while (1)
-        {
+        bool line_has_chars = false;
+        while (1) {
                 int nspaces = skip();
                 c = getchar();
 
                 if (c == EOF) {
                         break;
                 } else if (c == '\n') {
-                        if (nchars_for_line > 0)
+                        if (line_has_chars) {
                                 putchar('\n');
-                } else {
-                        for (int i = 0; i < nspaces; i++)
-                                putchar(' ');
-
-                        putchar(c);
-                        nchars_for_line++;
-                        while ((c = getchar()) != EOF && c != '\n' && c != ' ') {
-                                putchar(c);
-                                nchars_for_line++;
+                                line_has_chars = false;
                         }
+                } else {
+                        line_has_chars = true;
+
+                        for (int i = 0; i < nspaces; i++)
+                                putchar('+'); //display
+                        putchar(c);
+
+                        while ((c = getchar()) != EOF && c != '\n' && c != ' ')
+                                putchar(c);
 
                         if (c == ' ')
                                 ungetc(c, stdin);
 
-                        if (c == '\n')
+                        if (c == '\n') {
                                 putchar(c);
+                                line_has_chars = false;
+                        }
                 }
         }
 }
